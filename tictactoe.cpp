@@ -69,8 +69,56 @@ tictactoe::Player tictactoe::checkWinCondition(int row, int column) {
     if (three_same_in_row){
         return currentPlayer();
     }
+
+    bool three_same_in_column = true;
+    for(int j=column;j<(column+6);j+=3){
+        if(board.at(j)->text() != board.at(j+3)->text()){
+            three_same_in_column = false;
+            break;
+        }
+    }
+    if (three_same_in_column){
+        return currentPlayer();
+    }
+
     if(row==column){
         //diagonal
+        bool three_same_on_diagonal = true;
+        for(int k=0;k<8;k+=4){
+            if(board.at(k)->text() != board.at(k+4)->text()){
+                three_same_on_diagonal = false;
+                break;
+            }
+        }
+        if (three_same_on_diagonal){
+            return currentPlayer();
+        }
+    }
+
+    if ( ((row==1)&&(column==1)) ||
+         ((row==2)&&(column==0)) ||
+         ((row==0)&&(column==2))){
+        bool three_same_on_counterdiagonal = true;
+        for(int l=2;l<6;l+=2){
+            if(board.at(l)->text() != board.at(l+2)->text()){
+                three_same_on_counterdiagonal = false;
+                break;
+            }
+        }
+        if(three_same_on_counterdiagonal){
+            return currentPlayer();
+        }
+    }
+
+    bool its_draw = true;
+    for(int field=0;field<9;++field){
+        if( board.at(field)->text()==" "){
+            its_draw = false;
+            break;
+        }
+    }
+    if(its_draw){
+        return Draw;
     }
     return Invalid;
 };
