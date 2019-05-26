@@ -1,5 +1,6 @@
 #include "tictactoe.h"
 #include "ui_tictactoe.h"
+#include "ai.h"
 #include <QGridLayout>
 #include <QPushButton>
 #include <QSignalMapper>
@@ -16,6 +17,7 @@ void tictactoe::initNewGame()
 {
     for(int i=0;i<9;++i) board.at(i)->setText(" ");
     m_currentPlayer = tictactoe::Player1;
+    m_aiOn=false;
 }
 
 tictactoe::~tictactoe()
@@ -41,17 +43,40 @@ void tictactoe::setupBoard()
     connect(mapper, SIGNAL(mapped(int)), this, SLOT(handleButtonClick(int)));
     setLayout(gridLayout);
     initNewGame();
+    if(m_aiOn){
+        for(int i=0;i<9;++i)ai_board[i]=0;
+    }
 }
 
 void tictactoe::handleButtonClick(int index) {
     if (index <0 || index >= board.size() ) return;
     QPushButton *button = board.at(index);
+
     if(button->text() != " ") return;
-    button->setText(currentPlayer() == tictactoe::Player1 ? "X" : "O");
+    if(currentPlayer() == tictactoe::Player1){
+        button->setText("X");
+        if(m_aiOn){
+            ai_board[index]=1;
+        }
+    } else {
+        button->setText("O");
+        //ai is always second player so it must be disabled
+    }
     Player winner = checkWinCondition(index/3, index%3);
     if(winner == Invalid){
         setCurrentPlayer(currentPlayer() == tictactoe::Player1 ? tictactoe::Player2 : tictactoe::Player1);
-        return;
+        if(m_aiOn){
+            //ai finds best move
+            int ai_index=0;
+            ai_index = ai::minmax(ai_board,0,false);
+            //ai makes move
+            ai_board[ai_index]=-1;
+            QPushButton *button = board.at(ai_index);
+            button->setText("O");
+            Player winner = checkWinCondition(ai_index/3, ai_index%3);
+            if(winner!=Invalid)emit gameOver(winner);
+            setCurrentPlayer(currentPlayer() == tictactoe::Player1 ? tictactoe::Player2 : tictactoe::Player1);
+        }
     } else {
         emit gameOver(winner);
     }

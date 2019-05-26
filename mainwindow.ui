@@ -67,7 +67,6 @@
     <addaction name="actionNew_Game"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
-    <addaction name="separator"/>
    </widget>
    <addaction name="menu_File"/>
   </widget>
@@ -114,6 +113,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionPlay_with_AI">
+   <property name="text">
+    <string>Play with AI</string>
    </property>
   </action>
  </widget>

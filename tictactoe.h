@@ -42,9 +42,12 @@ public:
 private:
     Ui::tictactoe *ui;
     QList<QPushButton*> board;
+    int ai_board[9] ={0};
     Player m_currentPlayer;
     void setupBoard();
     Player checkWinCondition(int, int);
+public:
+    bool m_aiOn;
 };
 
 #endif // TICTACTOE_H

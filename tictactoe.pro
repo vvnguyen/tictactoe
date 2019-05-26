@@ -25,12 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        ai.cpp \
         configurationdialog.cpp \
         main.cpp \
         mainwindow.cpp \
         tictactoe.cpp
 
 HEADERS += \
+        ai.h \
         configurationdialog.h \
         mainwindow.h \
         tictactoe.h

@@ -25,6 +25,9 @@ void MainWindow::startNewGame(){
     ui->player2->setText(dlg.player2Name());
     ui->gameBoard->initNewGame();
     ui->gameBoard->setEnabled(true);
+    if(ui->player2->text()=="AI"){
+        ui->gameBoard->m_aiOn = true;
+    }
     updateNameLabels();
 }
 
